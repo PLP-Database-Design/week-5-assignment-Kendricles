@@ -27,17 +27,76 @@ This demonstrates the cconnection of MySQL database and Node.js to create a simp
 
    
    // Question 1 goes here
+      //Retrieve all patients
+app.get('/data', (req,res) => {
 
+    // Retrieve data from database 
+    db.query(query_1, (err, results) =>{
+      const query_1 = 'SELECT patient_id, first_name, last_name, date_of_birth FROM patients';
+        if (err){
+            console.error(err);
+            res.status(500).send('Error Retrieving data')
+        }else {
+            //Display the records to the browser 
+            res.render('data', {results: results});
+        }
+    });
+});
 
    // Question 2 goes here
+      //Retrieve all providers
+app.get('/data', (req,res) => {
+   const query_2 = 'SELECT first_name, last_name, provider_specialty FROM providers';
+
+    // Retrieve data from database 
+    db.query(query_2, (err, results) =>{
+        if (err){
+            console.error(err);
+            res.status(500).send('Error Retrieving data')
+        }else {
+            //Display the records to the browser 
+            res.render('data', {results: results});
+        }
+    });
+});
 
 
    // Question 3 goes here
-
+//Retrieve patients, filter by first_name
+app.get('/data', (req,res) => {
+   const {first_name} = req.query;
+   const query_3 = 'SELECT patient_id, first_name, last_name, date_of_birth FROM patients WHERE first_name = ?';
+    // Retrieve data from database 
+    db.query(query_3, [first_name], (err, results) =>{
+        if (err){
+            console.error(err);
+            res.status(500).send('Error Retrieving data')
+        }else {
+            //Display the records to the browser 
+            res.render('data', {results: results});
+        }
+    });
+});
 
    // Question 4 goes here
 
    
+//Retrieve providers, filter by specialty
+app.get('/data', (req,res) => {
+   const {specialty} = req.query;
+   const query_3 = 'SELECT first_name, last_name, provider_specialty FROM providers WHERE provider_specialty = ?';
+    // Retrieve data from database 
+    db.query(query_4, [specialty], (err, results) =>{
+        if (err){
+            console.error(err);
+            res.status(500).send('Error Retrieving data')
+        }else {
+            //Display the records to the browser 
+            res.render('data', {results: results});
+        }
+    });
+});
+
 
    // listen to the server
    const PORT = 3000
